@@ -203,19 +203,7 @@ class GMapClient
     }
 
     $apiURL = self::API_URL.$format.'?key='.$this->getAPIKey().'&sensor=false&address='.urlencode($address);
-    try
-    {
-      $raw_data = file_get_contents($apiURL);
-    }
-    catch (Exception $e)
-    {
-      if (sfContext::hasInstance())
-      {
-        sfContext::getInstance()->getLogger()->err($e->getCode().' - '.$e->getMessage());
-      }
-
-      return null;
-    }
+    $raw_data = file_get_contents($apiURL);
 
 
     if ($this->hasCache())
