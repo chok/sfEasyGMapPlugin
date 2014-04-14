@@ -50,17 +50,20 @@ class GMapGeocodedAddress
   public function geocode($gmap_client)
   {
     $raw_data = $gmap_client->getGeocodingInfo($this->getRawAddress());
-    $geocoded_array = explode(',', $raw_data);
-    if ($geocoded_array[0] != 200)
+    $geocoded = json_decode($raw_data);
+    if (!isset($geocoded->results) || count($geocoded->results) == 0)
     {
 
       return false;
     }
-    $this->lat = $geocoded_array[2];
-    $this->lng = $geocoded_array[3];
-    $this->accuracy = $geocoded_array[1];
+    
+    $result = array_shift($geocoded->results);
+    $location = $result->geometry->location;
+    $this->lat = $location->lat;
+    $this->lng = $location->lng;
+    $this->status = $geocoded->status;
 
-    return $this->accuracy;
+    return $this->status;
   }
 
   /**

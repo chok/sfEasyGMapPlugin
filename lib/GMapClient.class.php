@@ -25,7 +25,7 @@ class GMapClient
    */
   protected $api_keys = null;
 
-  const API_URL = 'http://maps.google.com/maps/geo?';
+  const API_URL = 'https://maps.googleapis.com/maps/api/geocode/';
   const JS_URL = 'http://maps.google.com/maps/api/js?sensor=false';
 
   /**
@@ -190,7 +190,7 @@ class GMapClient
    * @author fabriceb
    * @since 2009-06-17
    */
-  public function getGeocodingInfo($address, $format = 'csv')
+  public function getGeocodingInfo($address, $format = 'json')
   {
     if ($this->hasCache())
     {
@@ -202,7 +202,7 @@ class GMapClient
       }
     }
 
-    $apiURL = self::API_URL.'&output='.$format.'&key='.$this->getAPIKey().'&q='.urlencode($address);
+    $apiURL = self::API_URL.$format.'?key='.$this->getAPIKey().'&sensor=false&address='.urlencode($address);
     try
     {
       $raw_data = file_get_contents($apiURL);
